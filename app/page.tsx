@@ -1,6 +1,6 @@
 const page = () => {
   return (
-    <div>Welcome to Next16!</div>
+    <h1>Welcome to Next16!</h1>
   )
 }
 

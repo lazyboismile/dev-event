@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { BASE_URL } from "@/lib/config";
 
 interface Props {
     title: string;
@@ -9,8 +10,6 @@ interface Props {
     date: string;
     time: string;
 }
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const EventCard = ({title, image, slug, location, date, time}: Props) => {
   return (

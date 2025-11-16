@@ -9,3 +9,7 @@ export const getSerialForImage = (filename: string) => {
     const ext = path.parse(filename).ext;
     return uuidv4() + ext;
 };
+
+// DATABASE CONNECTION URL
+
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;

@@ -26,7 +26,7 @@
 
             // Generate filename
             const imageName = `${Date.now()}-${name}`;
-            const uploadDir = path.join(process.cwd(), "public", "uploads", "events");
+            const uploadDir = path.join(process.cwd(), "uploads", "events");
             const filePath = path.join(uploadDir, imageName);
 
             // Save file

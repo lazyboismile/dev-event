@@ -16,7 +16,7 @@
             const filename = formData.get('image') as File;
             console.log('POST: imageUploader');
 
-            if (!filename) return NextResponse.json({message: "Image is required"}, { status: 400 });
+            if (!filename) return NextResponse.json({message: 'Image is required'}, { status: 400 });
 
             const mimetype = filename.type;
             const validMime = validMimeTypes.includes(mimetype);
@@ -43,5 +43,18 @@
         catch (error) {
             console.log("Error, POST :", error);
             return NextResponse.json({ message: 'Event Creation failed:', error}, { status: 400 })
+        }
+    }
+
+    export async function GET() {
+        try {
+            await connectDB();
+
+            const events = await Event.find().sort({ createdAt: -1 }).exec();
+            console.log('GET, getEvents', events);
+            return NextResponse.json({ message: 'data fetching completed', events}, { status: 200})
+        } catch (error) {
+            console.log('Error, getEvents', error);
+            return NextResponse.json({ message: 'getEvents =>', error }, { status: 500 });
         }
     }

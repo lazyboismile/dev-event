@@ -1,9 +1,12 @@
 import { IEvent } from "@/database";
 import { BASE_URL } from "@/lib/config";
+import { cacheLife } from "next/cache";
 import EventCard from "./components/EventCard";
 import ExploreButton from "./components/ExploreButton";
 
 const page = async () => {
+  'use cache';
+  cacheLife('hours');
   const result = await fetch(`${BASE_URL}/api/events`);
   const { events } = await result.json();
 

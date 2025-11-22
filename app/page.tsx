@@ -1,8 +1,7 @@
-import { events } from "@/lib/constants"
-import EventCard from "./components/EventCard"
-import ExploreButton from "./components/ExploreButton"
 import { IEvent } from "@/database";
 import { BASE_URL } from "@/lib/config";
+import EventCard from "./components/EventCard";
+import ExploreButton from "./components/ExploreButton";
 
 const page = async () => {
   const result = await fetch(`${BASE_URL}/api/events`);
@@ -20,7 +19,7 @@ const page = async () => {
 
         <ul className="events">
           {events && events.length > 0 && events.map((event: IEvent) => (
-            <li key={event.title}>
+            <li className="list-none" key={event.title}>
               <EventCard {...event}/>
             </li>
           ))}

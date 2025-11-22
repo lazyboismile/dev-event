@@ -1,7 +1,10 @@
-import {notFound} from "next/navigation";
-import Image from "next/image";
-import { BASE_URL } from '@/lib/config';
 import BookEvent from "@/app/components/BookEvent";
+import EventCard from "@/app/components/EventCard";
+import { IEvent } from "@/database";
+import { getSimilarEventBySlug } from "@/lib/actions/event.actions";
+import { BASE_URL } from '@/lib/config';
+import Image from "next/image";
+import { notFound } from "next/navigation";
 
 const EventDetailItem = ({ icon, alt, label }: { icon: string; alt: string; label: string; }) => (
     <div className="flex-row-gap-2 items-center">
@@ -48,6 +51,9 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
     if(!event) return notFound();
 
     const bookings = 10;
+
+    const similarEvents: IEvent[] = await getSimilarEventBySlug(slug);
+    console.log("similarEvents:" , similarEvents);
 
     return (
         <section id="event">
@@ -101,6 +107,15 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
                         <BookEvent eventId={""} slug={""} />
                     </div>
                 </aside>
+            </div>
+
+            <div className="flex w-full flex-col  gap-4 pt-20">
+                <h2>Similar Events</h2>
+                <div className="events">
+                    {similarEvents?.length > 0 && similarEvents.map((similarEvent: IEvent) => {
+                        return <EventCard key={similarEvent.title} { ...similarEvent} />
+                    })}
+                </div>
             </div>
 
         </section>

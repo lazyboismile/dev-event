@@ -1,7 +1,7 @@
 import { Event } from "@/database";
 import { getSerialForImage, validMimeTypes } from "@/lib/config";
 import connectDB from "@/lib/mongodb";
-import { writeFile } from "fs/promises";
+import * as fs from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 
@@ -26,16 +26,19 @@ export async function POST(req: NextRequest) {
 
         const name = getSerialForImage(filename.name);
 
-        // Generate filename
-        const imageName = `${Date.now()}-${name}`;
-        const uploadDir = path.join(process.cwd(), "uploads", "events");
-        const filePath = path.join(uploadDir, imageName);
+        const uploadDir = path.join(process.cwd(), "public", "uploads", "events");
+        await fs.mkdir(uploadDir, { recursive: true });
 
-        // Save file
-        await writeFile(filePath, name);
+        const filePath = path.join(uploadDir, name);
 
-        event.image = `/uploads/events/${imageName}`;
+        // Convert File → Buffer
+        const buffer = Buffer.from(await filename.arrayBuffer());
 
+        // Save the actual file content
+        await fs.writeFile(filePath, buffer);
+
+        // Save path in DB
+        event.image = `/public/uploads/events/${name}`;
         const createEvent = await Event.create({
             ...event,
             tags: tags,
